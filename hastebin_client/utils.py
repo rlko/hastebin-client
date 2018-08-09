@@ -6,7 +6,7 @@ from .config import haste_config
 
 def read_data(filename=None):
     if filename:
-        with open(filename, 'r') as f:
+        with open(filename, 'rb') as f:
             return f.read()
 
     # If trying to read from console:
