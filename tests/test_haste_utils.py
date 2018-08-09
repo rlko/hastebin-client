@@ -26,8 +26,16 @@ def test_read_data_stdin_abort():
 def test_read_data_file():
     with mock.patch('builtins.open', mock.mock_open(read_data='data')) as mock_open:
         result = read_data('file')
-        mock_open.assert_called_once_with('file', 'r')
+        mock_open.assert_called_once_with('file', 'rb')
     assert result == 'data'
+
+
+def test_read_foreign_data_file():
+    data = '你好café餌ですèêëàâäåôöøùûüîïæпока'
+    with mock.patch('builtins.open', mock.mock_open(read_data=data)) as mock_open:
+        result = read_data('file')
+        mock_open.assert_called_once_with('file', 'rb')
+    assert result == '你好café餌ですèêëàâäåôöøùûüîïæпока'
 
 
 def test_upload():
@@ -56,4 +64,3 @@ def test_upload_too_big():
         post_function.return_value.json.return_value = {'message': 'Document exceeds maximum length.'}
         result = upload('test data')
     assert result is None
-
